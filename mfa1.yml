@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mfa-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mfa-backend
+  template:
+    metadata:
+      labels:
+        app: mfa-backend
+    spec:
+      containers:
+        - name: mfa-backend-container
+          image: guruprasadsingirikonda/mfa:v1
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "512m"
+              memory: "512Mi"
+            requests:
+              cpu: "256m"
+              memory: "256Mi"

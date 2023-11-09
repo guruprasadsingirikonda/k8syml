@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mfa-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mfa-backend
+  template:
+    metadata:
+      labels:
+        app: mfa-backend
+    spec:
+      containers:
+      - name: mfa-backend-container
+        image: guruprasadsingirikonda/mfa:v1
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "512m"
+            memory: "2Gi"
+          requests:
+            cpu: "256m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /mfa-service/health/liveness
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /mfa-service/health/readiness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
